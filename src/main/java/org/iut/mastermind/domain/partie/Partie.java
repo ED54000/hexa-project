@@ -52,20 +52,11 @@ public class Partie {
         nbEssais++;
         MotSecret motSecret = new MotSecret(motADeviner);
         Reponse reponse = motSecret.compareProposition(motPropose);
-        if (reponse.lettresToutesPlacees()){
-            partieTerminee = true;
+        if (reponse.lettresToutesPlacees() || nbEssais >= NB_ESSAIS_MAX){
+            done();
         }
-        verifieNbEssais();
         return reponse;
     }
-
-    // vérifie que le nombre d'essais max n'est pas atteint
-    private void verifieNbEssais() {
-        if (nbEssais >= NB_ESSAIS_MAX) {
-            partieTerminee = true;
-        }
-    }
-
 
 
     // la partie est-elle terminée

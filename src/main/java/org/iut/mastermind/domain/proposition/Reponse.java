@@ -2,6 +2,7 @@ package org.iut.mastermind.domain.proposition;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.Collections.unmodifiableList;
 
 public class Reponse {
@@ -15,22 +16,20 @@ public class Reponse {
 
     // on récupère la lettre à la position dans le résultat
     public Lettre lettre(int position) {
-        return resultat.get(position) ;
+        return resultat.get(position);
     }
 
     // on construit le résultat en analysant chaque lettre
     // du mot proposé
     public void compare(String essai) {
-        resultat.clear();
-        for (int i = 0; i < essai.length(); i++) {
-            position = i ;
-            resultat.add(position,evaluationCaractere(essai.charAt(i)));
+        for (position = 0; position < essai.length(); position++) {
+            resultat.add(evaluationCaractere(essai.charAt(position)));
         }
     }
 
     // si toutes les lettres sont placées
     public boolean lettresToutesPlacees() {
-        return resultat.stream().allMatch(lettre -> lettre==Lettre.PLACEE);
+        return resultat.stream().allMatch(lettre -> lettre == Lettre.PLACEE);
     }
 
     public List<Lettre> lettresResultat() {
@@ -40,12 +39,7 @@ public class Reponse {
     // renvoie le statut du caractère
     private Lettre evaluationCaractere(char carCourant) {
         if (estPresent(carCourant)) {
-            if(estPlace(carCourant)) {
-                return Lettre.PLACEE;
-            }
-            else {
-                return Lettre.NON_PLACEE;
-            }
+            return estPlace(carCourant);
         }
         return Lettre.INCORRECTE;
     }
@@ -56,7 +50,10 @@ public class Reponse {
     }
 
     // le caractère est placé dans le mot secret
-    private boolean estPlace(char carCourant) {
-       return motSecret.charAt(position) == carCourant;
+    private Lettre estPlace(char carCourant) {
+        if (motSecret.charAt(position) == carCourant) {
+            return Lettre.PLACEE;
+        }
+        return Lettre.NON_PLACEE;
     }
 }
